@@ -1,5 +1,7 @@
 #pragma once
+
 #include "execution.hpp"
+
 #include <cmath>
 #include <cstdint>
 #include <fstream>
@@ -58,7 +60,6 @@ struct RunData {
         fill_inv.push_back(inv_after);
     }
 
-    // ── serialisation ─────────────────────────────────────────────────────────
     // Writes three CSV files:
     //   {prefix}_pnl.csv    — t_us, pnl, inventory
     //   {prefix}_quotes.csv — t_us, bid, ask, mid

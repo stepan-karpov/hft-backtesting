@@ -1,6 +1,4 @@
-# Entrance Assignment — CMF HFT School
-
-Backtesting engine + Avellaneda–Stoikov strategy on limit order book data.
+# Backtesting engine + Avellaneda–Stoikov strategy on limit order book data.
 
 ## 1 Simulation setup
 

@@ -1,8 +1,7 @@
 #pragma once
+
 #include "orderbook.hpp"
 #include <vector>
-
-// ─── Order / Fill ─────────────────────────────────────────────────────────────
 
 struct Order {
     bool   is_bid;
@@ -17,17 +16,10 @@ struct Fill {
     double size;
 };
 
-// ─── ExecutionModel (abstract) ────────────────────────────────────────────────
-
 class ExecutionModel {
 public:
     virtual ~ExecutionModel() = default;
 
-    // Match active orders against one incoming trade.
-    //   has_bid / has_ask   — updated in-place (cleared on fill)
-    //   bid / ask           — updated in-place
-    //   ob                  — apply_trade called in-place
-    //   fills_out           — filled events appended here
     virtual void match(
         bool& has_bid, Order& bid,
         bool& has_ask, Order& ask,

@@ -1,16 +1,3 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// bindings.cpp — THE ONLY FILE WITH PYTHON INTEROP
-//
-// Contains:
-//   1. PyStrategy  — wraps a Python strategy object, calls on_lob / on_fill
-//                    via pybind11. This is the single C++ ↔ Python seam.
-//   2. run()       — takes file paths, creates readers, runs C++ Backtester,
-//                    writes result CSVs to disk.
-//   3. pybind11 module definition.
-//
-// All business logic lives in engine/*.hpp (pure C++, no Python headers).
-// ─────────────────────────────────────────────────────────────────────────────
-
 #include <pybind11/pybind11.h>
 
 #include "engine/backtester.hpp"
@@ -26,8 +13,6 @@
 namespace py = pybind11;
 using namespace pybind11::literals;
 
-// ─── PyStrategy: the C++ ↔ Python seam ───────────────────────────────────────
-//
 // on_lob: strategy returns list[(side_str, price, size)]; parsed to vector<Order>.
 // on_fill: called with primitive args (t_us, side_str, price, size).
 

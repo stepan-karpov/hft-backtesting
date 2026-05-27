@@ -1,21 +1,18 @@
 #pragma once
+
 #include "orderbook.hpp"
+
 #include <cstdint>
-#include <cstdlib>   // strtod, strtoll
+#include <cstdlib>
 #include <fstream>
 #include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Streaming CSV helpers
-// ─────────────────────────────────────────────────────────────────────────────
 
 namespace detail {
 
-// Split a line in-place into string_views (no allocation).
-// All views point into `line`; valid until line is modified.
 inline void split_csv(const std::string& line,
                       std::vector<std::string_view>& out) {
     out.clear();
@@ -29,8 +26,6 @@ inline void split_csv(const std::string& line,
     }
 }
 
-// strtod/strtoll stop at the first non-numeric char (comma, \0, etc.).
-// Safe here because all views point into a null-terminated std::string.
 inline double  to_f64(std::string_view sv) { return std::strtod(sv.data(), nullptr); }
 inline int64_t to_i64(std::string_view sv) { return (int64_t)std::strtoll(sv.data(), nullptr, 10); }
 
@@ -42,17 +37,6 @@ inline int find_col(const std::vector<std::string_view>& hdr,
 }
 
 } // namespace detail
-
-// ─────────────────────────────────────────────────────────────────────────────
-// LobReader — streams lob.csv row-by-row, maintains OrderBook state
-//
-// Usage:
-//   LobReader lob("data/lob_train.csv");
-//   while (lob.valid()) {
-//       use lob.orderbook(), lob.timestamp();
-//       lob.advance();
-//   }
-// ─────────────────────────────────────────────────────────────────────────────
 
 class LobReader {
     std::ifstream             _file;

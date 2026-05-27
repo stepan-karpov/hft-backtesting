@@ -1,4 +1,5 @@
 #pragma once
+
 #include <array>
 #include <cstdint>
 
@@ -11,13 +12,10 @@ struct OrderBook {
     std::array<Level, LOB_LEVELS> asks;   // ascending price
     int64_t timestamp_us = 0;
 
-    // ── properties ───────────────────────────────────────────────────────────
     double best_bid() const noexcept { return bids[0].price; }
     double best_ask() const noexcept { return asks[0].price; }
     double mid()      const noexcept { return 0.5 * (bids[0].price + asks[0].price); }
     double spread()   const noexcept { return asks[0].price - bids[0].price; }
-
-    // ── write API ────────────────────────────────────────────────────────────
 
     // Refresh from pre-extracted row slices (row-major arrays, stride = LOB_LEVELS).
     void refresh(const double* bp, const double* ba,

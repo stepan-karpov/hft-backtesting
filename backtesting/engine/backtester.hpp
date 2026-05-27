@@ -1,4 +1,5 @@
 #pragma once
+
 #include "execution.hpp"
 #include "orderbook.hpp"
 #include "reader.hpp"
@@ -7,7 +8,7 @@
 #include <cstdint>
 #include <stdexcept>
 
-// Pure C++ replay engine. No Python types anywhere in this file.
+// Pure C++ replay engine.
 //
 // Two-pointer merge of LobReader and TradeReader.
 // Trades-first tie-breaking: at equal timestamps, trades processed before LOB.
@@ -52,13 +53,11 @@ public:
         trade_fills.reserve(2);
 
         while (lob.valid() || trades.valid()) {
-            // Trades first on equal timestamps (LOB reflects post-trade state)
             const bool take_lob =
                 !trades.valid() ||
                 (lob.valid() && lob.timestamp() < trades.timestamp());
 
             if (take_lob) {
-                // ── LOB event ─────────────────────────────────────────────────
                 t_us = lob.timestamp();
                 OrderBook& ob = lob.orderbook();
 
@@ -90,7 +89,6 @@ public:
                 lob.advance();
 
             } else {
-                // ── Trade event ───────────────────────────────────────────────
                 t_us = trades.timestamp();
                 OrderBook&       ob = lob.orderbook();
                 const TradeEvent& ev = trades.event();
@@ -122,7 +120,6 @@ public:
             }
         }
 
-        // Final markout — lob.orderbook() retains last valid state
         const double fin_mid = lob.orderbook().mid();
         cash += inventory * fin_mid;
         data.add_fill(t_us, Fill{2, fin_mid, -inventory}, 0.0);
